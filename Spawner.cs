@@ -8,7 +8,7 @@ public class Spawner : MonoBehaviour
     private int _delayCreating = 2;
     private Coroutine _coroutine;
 
-    private void Update()
+    private void Start()
     {
         if (_coroutine == null)
             _coroutine = StartCoroutine(CreateWhithDelay());
@@ -20,48 +20,31 @@ public class Spawner : MonoBehaviour
         {
             Enemy enemy = Instantiate(_enemy);
 
-            var startPosition = GetRandomStartPosition();
-            var finishPosition = GetRandomFinishPosition();
+            var startPosition = GetRandomVector();
+            var randomDirection = GetRandomVector();
             var rotation = Quaternion.identity;
             var color = Color.yellow;
             var rigidbody = Vector3.zero;
 
-            enemy.Init(startPosition, rotation, color, rigidbody, finishPosition);
+            enemy.Init(startPosition, rotation, color, rigidbody, randomDirection);
 
             yield return new WaitForSeconds(_delayCreating);
         }
     }
 
-    private Vector3 GetRandomStartPosition()
+    private Vector3 GetRandomVector()
     {
-        int minRandomValue = -10;
-        int maxRandomValue = 10;
-        System.Random random = new System.Random();
-        int valueRandom = random.Next(minRandomValue, maxRandomValue);
+        int minRandomValue = -5;
+        int maxRandomValue = 5;
 
         return new Vector3(
-            this.transform.position.x + valueRandom,
-            this.transform.position.y,
-            this.transform.position.z + valueRandom);
-    }
-
-    private Vector3 GetRandomFinishPosition()
-    {
-        int minRandomValue = -50;
-        int maxRandomValue = 50;
-
-        int valueRandomX = GetRandomValue(minRandomValue, maxRandomValue);
-        int valueRandomY = GetRandomValue(minRandomValue, maxRandomValue);
-
-        return new Vector3(
-            this.transform.position.x + valueRandomX,
-            this.transform.position.y,
-            this.transform.position.z + valueRandomY);
+            transform.position.x + GetRandomValue(minRandomValue, maxRandomValue),
+            transform.position.y,
+            transform.position.z + GetRandomValue(minRandomValue, maxRandomValue));
     }
 
     private int GetRandomValue(int minRandomValue, int maxRandomValue)
     {
-        System.Random randomFinishX = new System.Random();
-        return randomFinishX.Next(minRandomValue, maxRandomValue +1 );
+        return Random.Range(minRandomValue, maxRandomValue + 1);
     }
 }
