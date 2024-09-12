@@ -1,6 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
+[RequireComponent(typeof(Rigidbody))]
 
 public class Enemy : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class Enemy : MonoBehaviour
 
     private Renderer _renderer;
     private Rigidbody _rigidbody;
-    private Vector3 _randomDirection;
+    private Vector3 _direction;
 
     private void Awake()
     {
@@ -16,7 +17,7 @@ public class Enemy : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         Move();
     }
@@ -27,11 +28,12 @@ public class Enemy : MonoBehaviour
         transform.rotation = rotation;
         _renderer.material.color = color;
         _rigidbody.velocity = rigidbody;
-        _randomDirection = randomDirection;
+        _direction = randomDirection;
     }
 
     private void Move()
     {
-        transform.Translate(_randomDirection * _speed * Time.fixedDeltaTime);
+        transform.Translate(_direction * _speed * Time.deltaTime, Space.World);
+        transform.LookAt(_direction);
     }
 }
