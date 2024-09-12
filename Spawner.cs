@@ -20,31 +20,74 @@ public class Spawner : MonoBehaviour
         {
             Enemy enemy = Instantiate(_enemy);
 
-            var startPosition = GetRandomVector();
-            var randomDirection = GetRandomVector();
+            var startPosition = GetRandomStartPosition();
+            var randomDirection = GetRandomDirection();
             var rotation = Quaternion.identity;
             var color = Color.yellow;
-            var rigidbody = Vector3.zero;
+            Vector3 rigidbody = Vector3.zero;
 
             enemy.Init(startPosition, rotation, color, rigidbody, randomDirection);
 
-            yield return new WaitForSeconds(_delayCreating);
+            WaitForSeconds wait = new WaitForSeconds(_delayCreating);
+
+            yield return wait;
         }
     }
 
-    private Vector3 GetRandomVector()
+    private Vector3 GetRandomDirection()
     {
-        int minRandomValue = -5;
-        int maxRandomValue = 5;
+        int minRandomValueNegativeOutside = -150;
+        int maxRandomValueNegativeOutside = -125;
+        
+        int minRandomValuePositiveOutside = 125;
+        int maxRandomValuePositiveOutside = 150;
 
-        return new Vector3(
-            transform.position.x + GetRandomValue(minRandomValue, maxRandomValue),
-            transform.position.y,
-            transform.position.z + GetRandomValue(minRandomValue, maxRandomValue));
+        int positiveOutside = Random.Range(minRandomValuePositiveOutside, maxRandomValuePositiveOutside);
+        int negativeOutside = Random.Range(minRandomValueNegativeOutside, maxRandomValueNegativeOutside);
+
+        int directionX;
+        int directionZ;
+
+        int randomVaribleForMove = Random.Range(1, 5);
+
+        switch (randomVaribleForMove)
+        {
+            case 1:
+                directionX = positiveOutside;
+                directionZ = Random.Range(maxRandomValueNegativeOutside, minRandomValuePositiveOutside);
+
+                return new Vector3(directionX, transform.position.y, directionZ);
+
+            case 2:
+                directionX = negativeOutside;
+                directionZ = Random.Range(maxRandomValueNegativeOutside, minRandomValuePositiveOutside);
+
+                return new Vector3(directionX, transform.position.y, directionZ);
+
+            case 3:
+                directionX = Random.Range(maxRandomValueNegativeOutside, minRandomValuePositiveOutside);
+                directionZ = positiveOutside;
+
+                return new Vector3(directionX, transform.position.y, directionZ);
+
+            case 4:
+                directionX = Random.Range(maxRandomValueNegativeOutside, minRandomValuePositiveOutside);
+                directionZ = negativeOutside;
+
+                return new Vector3(directionX, transform.position.y, directionZ);
+        }
+
+        return new Vector3();
     }
 
-    private int GetRandomValue(int minRandomValue, int maxRandomValue)
+    private Vector3 GetRandomStartPosition()
     {
-        return Random.Range(minRandomValue, maxRandomValue + 1);
+        int minRandomValue = -15;
+        int maxRandomValue = 15;
+
+        return new Vector3(
+            transform.position.x + Random.Range(minRandomValue, maxRandomValue),
+            transform.position.y,
+            transform.position.z + Random.Range(minRandomValue, maxRandomValue));
     }
 }
