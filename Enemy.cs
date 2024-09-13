@@ -22,12 +22,12 @@ public class Enemy : MonoBehaviour
         Move();
     }
 
-    public void Init(Vector3 startPosition, Quaternion rotation, Color color, Vector3 rigidbody, Vector3 randomDirection)
+    public void Init(Vector3 startPosition, Quaternion rotation, Color color, Vector3 velocity, Vector3 randomDirection)
     {
         transform.position = startPosition;
         transform.rotation = rotation;
         _renderer.material.color = color;
-        _rigidbody.velocity = rigidbody;
+        _rigidbody.velocity = velocity;
         _direction = randomDirection;
     }
 
