@@ -7,6 +7,7 @@ public class Spawner : MonoBehaviour
 
     private int _delayCreating = 2;
     private Coroutine _coroutine;
+    private WaitForSeconds wait; 
 
     private void Start()
     {
@@ -25,10 +26,8 @@ public class Spawner : MonoBehaviour
             var rotation = Quaternion.identity;
             var color = Color.yellow;
             Vector3 rigidbody = Vector3.zero;
-
             enemy.Init(startPosition, rotation, color, rigidbody, randomDirection);
-
-            WaitForSeconds wait = new WaitForSeconds(_delayCreating);
+            wait = new WaitForSeconds(_delayCreating);
 
             yield return wait;
         }
